@@ -1,0 +1,100 @@
+<head>
+  <title>phonons</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+</head>
+
+<body>
+  <div class="menu-container">
+    {{> menu}}
+    <hr>
+    {{> equations}}
+  </div>
+
+  <div class="simulation">
+    <canvas id="canvas" width=800 height=600></canvas>
+  </div>
+</body>
+
+<template name="menu">
+  <div class="menu">
+
+  <form class="form-horizontal">
+
+    <div class="form-group">
+      <label class="col-md-6 control-label">Atoms</label>
+      <div class="col-md-5">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <div class="btn btn-default decrease-input">-</div>
+          </div>
+          <input data-increment=1 class="form-control" id="numAtoms" value="{{numAtoms}}">
+          <div class="input-group-btn">
+            <div class="btn btn-default increase-input">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-6 control-label">Lattice constant</label>
+      <div class="col-md-5">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <div class="btn btn-default decrease-input">-</div>
+          </div>
+          <input data-increment=1 class="form-control" id="latticeConst" value="{{latticeConst}}">
+          <div class="input-group-btn">
+            <div class="btn btn-default increase-input">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-6 control-label">Wavelength (λ)</label>
+      <div class="col-md-5">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <div class="btn btn-default decrease-input">-</div>
+          </div>
+          <input data-increment=1 class="form-control" id="l" value="{{l}}">
+          <div class="input-group-btn">
+            <div class="btn btn-default increase-input">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-6 control-label">Force constant (γ)</label>
+      <div class="col-md-5">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <div class="btn btn-default decrease-input">-</div>
+          </div>
+          <input data-increment="1" class="form-control" id="g" value="{{g}}">
+          <div class="input-group-btn">
+            <div class="btn btn-default increase-input">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-6 col-md-10">
+        <button type="submit" id="update" class="btn btn-primary">Update</button>
+      </div>
+    </div>
+
+  </form>
+
+  </div>
+</template>
+
+<template name="equations">
+  <div id="frequency"></div>
+  <div id="frequency2"></div>
+  <div id="frequency3"></div>
+  <div id="frequency4"></div>
+  <div id="frequency5"></div>
+</template>
