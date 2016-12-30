@@ -7285,6 +7285,7 @@
 
   Eval_float = function() {
     evaluatingAsFloats++;
+    console.log(JSON.stringify(p1, null, 2));
     push(cadr(p1));
     Eval();
     yyfloat();
@@ -7328,6 +7329,7 @@
     evaluatingAsFloats++;
     save();
     p1 = pop();
+    console.log(JSON.stringify(p1, null, 2));
     if (iscons(p1)) {
       h = tos;
       while (iscons(p1)) {
@@ -7337,6 +7339,7 @@
       }
       list(tos - h);
     } else if (p1.k === TENSOR) {
+      console.log("asdas");
       push(p1);
       copy_tensor();
       p1 = pop();

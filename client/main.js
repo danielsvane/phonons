@@ -6,10 +6,11 @@ import Simulation from "./imports/simulation";
 import Renderer from "./imports/renderer";
 
 let simulation = new Simulation();
+let renderer = new Renderer(simulation);
 
 Template.menu.helpers({
-  l: function(){
-    return simulation.l;
+  k: function(){
+    return simulation.k;
   },
   g: function(){
     return simulation.g;
@@ -19,41 +20,52 @@ Template.menu.helpers({
   },
   latticeConst: function(){
     return simulation.latticeConst;
+  },
+  u: function(){
+    return simulation.u;
   }
 });
 
 Template.menu.events({
   "click .increase-input": function(event){
     let el = $(event.target).parent().prev();
-    let incr = parseInt(el.data("increment"));
+    let incr = el.data("increment");
+    let decimalString = String(incr).split(".")[1];
+    let decimals = decimalString ? decimalString.length : 0;
+
+    console.log(decimals);
     el.val((i, prev) => {
-      return parseInt(prev)+incr;
+      let next = parseFloat(prev)+incr;
+      return next.toFixed(decimals);
     });
   },
   "click .decrease-input": function(event){
     let el = $(event.target).parent().next();
-    let incr = parseInt(el.data("increment"));
+    let incr = el.data("increment");
+    let decimalString = String(incr).split(".")[1];
+    let decimals = decimalString ? decimalString.length : 0;
+
     el.val((i, prev) => {
-      let next = parseInt(prev)-incr;
-      if(next <= 0) return 0;
-      else return next;
+      let next = parseFloat(prev)-incr;
+      //if(next <= 0) return 0;
+      return next.toFixed(decimals);
     });
   },
   "click #update": function(event){
       event.preventDefault();
-      let l = parseInt($("#l").val());
-      let g = parseInt($("#g").val());
 
-      simulation.l = l;
-      simulation.g = g;
+      simulation.g = parseFloat($("#g").val());
+      simulation.k = parseFloat($("#k").val());
       simulation.numAtoms = parseInt($("#numAtoms").val());
-      simulation.latticeConst = parseInt($("#latticeConst").val())
+      simulation.latticeConst = parseInt($("#latticeConst").val());
+      simulation.u = parseInt($("#u").val());
 
       simulation.createDisplacementFunction();
+      renderer.drawFrequencyFunction();
     }
 });
 
 Meteor.startup(() => {
   simulation.createDisplacementFunction(30);
-  let renderer = new Renderer(simulation);
+  renderer.init();
 });

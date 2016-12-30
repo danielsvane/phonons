@@ -1,5 +1,4 @@
-import Atom from "./atom";
-import Algebrite from "./algebrite";
+import Algebrite from "./algebrite2";
 import nearley from "nearley";
 import grammar from "./arithmetic";
 import katex from "katex";
@@ -17,48 +16,67 @@ let parse = function(eq){
 }
 
 export default class Simulation {
-  constructor(numAtoms = 5, latticeConst = 1, l = 5, A = 10, g = 3){
-    this.l = l;
+  constructor(numAtoms = 5, latticeConst = 11, k = 0.35, u = 10, g = 0.03){
+    this.k = k;
     this.g = g;
     this.time = 0;
-    this.A = A;
+    this.u = u;
     this.latticeConst = latticeConst;
     this.numAtoms = numAtoms;
   }
 
   getWaveVector(){
-    let eq = "2*pi/l";
+    let eq = "2*pi/(l)";
     return eq;
   }
 
   getFrequency(){
     let eq = "2*sqrt(g/M)*abs(sin(k*a/2))";
-    eq = replaceSingle(eq, "k", this.getWaveVector());
-    katex.render(Algebrite.eval(eq).toLatexString(), $("#frequency")[0], {displayMode: true});
-    return eq;
+    //eq = replaceSingle(eq, "k", this.getWaveVector());
+    let res = Algebrite.eval(eq);
+    katex.render("\\omega = "+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+
+    let eq2 = eq;
+    eq = replaceSingle(eq, "g", this.g/100);
+    eq = replaceSingle(eq, "M", 1);
+    //eq = replaceSingle(eq, "k", this.getWaveVector());
+    eq = replaceSingle(eq, "a", this.latticeConst);
+
+    res = Algebrite.eval(eq);
+    let parsed = parse(res.toString());
+    console.log(parsed);
+    this.frequencyFunction = parsed;
+
+    return eq2;
   }
 
   createDisplacementFunction(){
-    let eq = "A*exp(i*(k*a*n-o*t))";
+    $("#equations").html("");
+
+    let eq = "u*exp(i*(k*a*n-o*t))";
     eq = replaceSingle(eq, "o", this.getFrequency());
-    eq = replaceSingle(eq, "k", this.getWaveVector());
+    //eq = replaceSingle(eq, "k", this.getWaveVector());
 
     let res = Algebrite.simplify(eq);
-    katex.render(res.toLatexString(), $("#frequency2")[0], {displayMode: true});
+    katex.render("u_n ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
 
-    res = Algebrite.real(res);
-    katex.render(res.toLatexString(), $("#frequency3")[0], {displayMode: true});
+    // res = Algebrite.real(res);
+    // katex.render("Re\\{u_n\\} ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
 
-    eq = replaceSingle(eq, "g", this.g/100);
+    eq = replaceSingle(eq, "g", this.g);
     eq = replaceSingle(eq, "M", 1);
     eq = replaceSingle(eq, "a", this.latticeConst);
-    eq = replaceSingle(eq, "A", this.A);
-    eq = replaceSingle(eq, "l", this.l);
+    eq = replaceSingle(eq, "u", this.u);
+    eq = replaceSingle(eq, "k", this.k);
 
     res = Algebrite.real(eq);
-    katex.render(res.toLatexString(), $("#frequency4")[0], {displayMode: true});
-    res = Algebrite.float(res);
-    katex.render(res.toLatexString(), $("#frequency5")[0], {displayMode: true});
+    katex.render("Re\\{u_n\\} ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+
+    //
+    // res = Algebrite.eval(eq);
+    // katex.render(res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+
+    //res = Algebrite.float(res);
     let parsed = parse(res.toString());
     console.log(parsed);
     this.displacementFunction = parsed;
