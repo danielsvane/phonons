@@ -4,6 +4,7 @@ import "/node_modules/bootstrap/dist/css/bootstrap.css";
 import './main.html';
 import Simulation from "./imports/simulation";
 import Renderer from "./imports/renderer";
+import "./imports/analytics";
 
 let simulation = new Simulation();
 let renderer = new Renderer(simulation);
