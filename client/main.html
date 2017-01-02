@@ -5,9 +5,11 @@
 
 <body>
   <div class="menu-container">
-    {{> menu}}
-    <hr>
-    {{> equations}}
+    <div class="menu">
+      {{> menu}}
+      <hr>
+      {{> equations}}
+    </div>
   </div>
 
   <div class="simulation">
@@ -16,7 +18,6 @@
 </body>
 
 <template name="menu">
-  <div class="menu">
 
   <form class="form-horizontal">
 
@@ -103,9 +104,15 @@
 
   </form>
 
-  </div>
 </template>
 
 <template name="equations">
-  <div id="equations"></div>
+  <div id="equations">
+    <p>The displacement of the atoms equilibrium position is described by:</p>
+    <div id="u"></div>
+    <p>Where <var>ω</var> describes the frequency of a given wave vector <var>k</var>:</p>
+    <div id="o"></div>
+    <p>And the wave vector <var>k</var> is the reciprocal space wavelength:</p>
+    <div id="k"></div>
+  </div>
 </template>

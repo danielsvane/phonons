@@ -21988,7 +21988,7 @@
     }
     latexResult = latexResult.replace(/\n*/, "");
     latexResult = latexResult.replace(/\$\$\$\$\n*/g, "");
-    code = code.replace(/Math\./g, "");
+    //code = code.replace(/Math\./g, "");
     code = code.replace(/\n/g, "\n\n");
     if (TIMING_DEBUGS) {
       console.log("computeResultsAndJavaScriptFromAlgebra time (total time from notebook and back) for: " + stringToBeRun + " : " + ((new Date().getTime()) - timeStartFromAlgebra) + "ms");

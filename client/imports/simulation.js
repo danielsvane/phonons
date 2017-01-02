@@ -32,9 +32,8 @@ export default class Simulation {
 
   getFrequency(){
     let eq = "2*sqrt(g/M)*abs(sin(k*a/2))";
-    //eq = replaceSingle(eq, "k", this.getWaveVector());
     let res = Algebrite.eval(eq);
-    katex.render("\\omega = "+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+    //katex.render("\\omega = "+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
 
     let eq2 = eq;
     eq = replaceSingle(eq, "g", this.g/100);
@@ -51,17 +50,15 @@ export default class Simulation {
   }
 
   createDisplacementFunction(){
-    $("#equations").html("");
+    //$("#equations").html("");
 
     let eq = "u*exp(i*(k*a*n-o*t))";
     eq = replaceSingle(eq, "o", this.getFrequency());
-    //eq = replaceSingle(eq, "k", this.getWaveVector());
 
     let res = Algebrite.simplify(eq);
-    katex.render("u_n ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
-
-    // res = Algebrite.real(res);
-    // katex.render("Re\\{u_n\\} ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+    katex.render("u_n(t) = u \\cdot e^{i(kan-\\omega t)}", $("#equations > #u")[0], {displayMode: true});
+    katex.render("\\omega = 2\\sqrt{\\frac{\\gamma}{M}}|sin(\\frac{ka}{2})|", $("#equations > #o")[0], {displayMode: true});
+    katex.render("k = \\frac{2\\pi}{\\lambda}", $("#equations > #k")[0], {displayMode: true});
 
     eq = replaceSingle(eq, "g", this.g);
     eq = replaceSingle(eq, "M", 1);
@@ -70,13 +67,8 @@ export default class Simulation {
     eq = replaceSingle(eq, "k", this.k);
 
     res = Algebrite.real(eq);
-    katex.render("Re\\{u_n\\} ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
+    //katex.render("Re\\{u_n\\} ="+res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
 
-    //
-    // res = Algebrite.eval(eq);
-    // katex.render(res.toLatexString(), $("<div></div>").appendTo("#equations")[0], {displayMode: true});
-
-    //res = Algebrite.float(res);
     let parsed = parse(res.toString());
     console.log(parsed);
     this.displacementFunction = parsed;
